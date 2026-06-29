@@ -1,0 +1,7 @@
+langchain
+langchain-ollama
+chromadb
+sentence-transformers
+fastapi
+uvicorn
+streamlit
