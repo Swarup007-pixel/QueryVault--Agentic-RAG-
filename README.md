@@ -102,17 +102,18 @@ QueryVault-Agentic-RAG/
 ├── requirements.txt
 │
 ├── src/
-│   ├── model.py
-│   ├── rag_pipeline.py
-│   ├── embeddings.py
-│   ├── retriever.py
-│   ├── agent.py
-│   └── main.py
+│   ├── model.py                 # Initializes and manages the local Gemma4:e4b LLM
+│   ├── document_processor.py    # Loads PDFs, splits text, and generates embeddings
+│   ├── vector_store.py          # Creates, saves, loads, and queries the FAISS vector store
+│   ├── rag_pipeline.py          # Orchestrates the complete RAG workflow from retrieval to response generation
+│   ├── agent.py                 # Handles user queries and communicates with the RAG pipeline
+│   └── main.py                  # Entry point of the application
 │
-├── data/
+├── data/                        # Stores uploaded PDFs and generated vector databases
 │
-└── docs/
+└── docs/                        # Project documentation and architecture diagrams
 ```
+
 
 ## Current Status
 
