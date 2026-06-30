@@ -22,16 +22,19 @@ def text_spliter(document : list[Document], chunk_size = 1000, chunk_overlap = 2
     text_splitter = RecursiveCharacterTextSplitter(
         chunk_size =chunk_size  , chunk_overlap = chunk_overlap , add_start_index = add_start_index
         )
-    return text_spliter.split_documents(document)
+    return text_splitter.split_documents(document)
 
-#
+
 
 # ''''''''''''''''''''''''''''''''''''''''''''''''''''''''sentence-transformer (embedding)'''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-def Embedding(document: list[Document] , model_name : str = "sentence-transformers/all-mpnet-base-v2"):
+def Embedding(document: list[Document] , model_name : str = "sentence-transformers/all-MiniLM-L6-v2"):
     embedding = HuggingFaceEmbeddings(
-        model_name: model_name,
+        model_name = model_name,
         encode_kwargs={"normalize_embeddings": True}
     )
-    return embedding.embed_documents(document)
+    texts = [doc.page_content for doc in document]
+    return embedding.embed_documents(texts)
+
+#embedding_of_docs = Embedding(chunk)
 
 # ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
