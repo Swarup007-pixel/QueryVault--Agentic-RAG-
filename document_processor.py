@@ -2,6 +2,7 @@ import pypdf
 from langchain_core.documents import Document
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_huggingface import HuggingFaceEmbeddings
+from langchain_chroma import Chroma
 
 # ''''''''''''''''''''''''''''''''''''''''''''''''''''''''load_Document''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 def load_document(file_path:str) -> list[Document]:
@@ -27,14 +28,25 @@ def text_spliter(document : list[Document], chunk_size = 1000, chunk_overlap = 2
 
 
 # ''''''''''''''''''''''''''''''''''''''''''''''''''''''''sentence-transformer (embedding)'''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-def Embedding(document: list[Document] , model_name : str = "sentence-transformers/all-MiniLM-L6-v2"):
-    embedding = HuggingFaceEmbeddings(
-        model_name = model_name,
-        encode_kwargs={"normalize_embeddings": True}
-    )
-    texts = [doc.page_content for doc in document]
-    return embedding.embed_documents(texts)
+# ''''''''''''''''''''''''''''''''''''''''''''''''''''''''and vector storage'''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
-#embedding_of_docs = Embedding(chunk)
+def Embedding(model_name : str = "sentence-transformers/all-MiniLM-L6-v2"):
+     embedding = HuggingFaceEmbeddings(
+                model_name = model_name,
+                encode_kwargs={"normalize_embeddings": True}
+            )
+     return embedding
+#embedding = Embedding()
+
+def vector_store(chunk: list[Document],embedding_name , storage_name :str = "./chroma_db"):
+    return Chroma.from_documents(
+        collection_name="Query_Vault",
+        documents=chunk,
+        embedding = embedding_name,
+        persist_directory= storage_name
+    )
+    
+
+
 
 # ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
