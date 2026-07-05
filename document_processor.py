@@ -45,8 +45,4 @@ def vector_store(chunk: list[Document],embedding_name , storage_name :str = "./c
         embedding = embedding_name,
         persist_directory= storage_name
     )
-    
-
-
-
-# ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+# ''''''''''''''''''''''''''''''''''''''''''''''''''''''''retriever'''''''''''''''''''''''''''''''''''''''''''''''''''''''''
