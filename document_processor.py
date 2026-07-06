@@ -1,8 +1,10 @@
 import pypdf
+import List
 from langchain_core.documents import Document
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_chroma import Chroma
+from langchain_core.runnables import chain
 
 # ''''''''''''''''''''''''''''''''''''''''''''''''''''''''load_Document''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 def load_document(file_path:str) -> list[Document]:
@@ -45,4 +47,14 @@ def vector_store(chunk: list[Document],embedding_name , storage_name :str = "./c
         embedding = embedding_name,
         persist_directory= storage_name
     )
-# ''''''''''''''''''''''''''''''''''''''''''''''''''''''''retriever'''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+#vector = vector_store(chunk, embedding)
+#''''''''''''''''''''''''''''''''''''''''''''''''''''''''retriever'''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+@chain
+def retriever(query:str)->List[Document]:
+    embeded_query = embedding.embed_query(query)
+    vector_search = vector.similarity_search_by_vector(embeded_query)
+    return vector_search
+#query = "the questiom you wanna ask"
+#answer = retriever(query)
+
+#''''''''''''''''''''''''''''''''''''''''''''''''''''''''LLM/Agent integration''''''''''''''''''''''''''''''''''''''''''''''''''''''
