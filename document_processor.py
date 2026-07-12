@@ -5,6 +5,7 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_chroma import Chroma
 from langchain_core.runnables import chain
+from langchain.tools import tool
 
 # ''''''''''''''''''''''''''''''''''''''''''''''''''''''''load_Document''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 def load_document(file_path:str) -> list[Document]:
@@ -55,6 +56,13 @@ def retriever(query:str)->List[Document]:
     vector_search = vector.similarity_search_by_vector(embeded_query)
     return vector_search
 #query = "the questiom you wanna ask"
-#answer = retriever(query)
+#answer = retriever.invoke(query)
 
-#''''''''''''''''''''''''''''''''''''''''''''''''''''''''LLM/Agent integration''''''''''''''''''''''''''''''''''''''''''''''''''''''
+#''''''''''''''''''''''''''''''''''''''''''''''''''''''''LLM/Agent integration'''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+#''''''''''''''''''''''''''''''''''''''''''''''''''''''''retriever tool'''''''''''''''''''''''''''''''''''''''''''''''''''''''
+@tool
+def retrieve_query(query:str)->List[Document]:
+    output_of_retriever = retriever.invoke(query)
+    return "\n".join([docs.page_content for docs in output_of_retriever])
+
+#''''''''''''''''''''''''''''''''''''''''''''''''''''''''agent workflow'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
